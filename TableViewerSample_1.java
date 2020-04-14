@@ -16,6 +16,7 @@ public class TableViewerSample_1 {
         Shell shell = new Shell(display);
         shell.setLayout(new FillLayout());
         new TableViewerSample_1(shell);
+        shell.setText("TableViewerSample_1");
         shell.open ();
 
         while (!shell.isDisposed ()) {
