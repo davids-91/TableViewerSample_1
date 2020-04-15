@@ -1,18 +1,20 @@
-import java.text.Collator;
-import java.util.Locale;
-
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.TableColumn;
 
 public class AppPersonViewer extends TableViewer {
+
+	private MyViewerComparator comparator;
+	public static final String[] columnTitles = {"String", "String", "Integer"};
+	private static final int[] bounds = {150, 150, 100};
+	
 	public AppPersonViewer(Composite composite, int style) {
 		super(composite, style);
 		Table table = getTable();
@@ -22,13 +24,11 @@ public class AppPersonViewer extends TableViewer {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		setContentProvider(new AppContentProvider());
+		comparator = new MyViewerComparator();
+		setComparator(comparator);
 	}
-
-	public static final String[] columnTitles = {"String", "String", "Integer"};
 	
 	private void createColumns() {
-//		String[] titles = {"String", "String", "Integer"};
-		int[] bounds = {150, 150, 100};
 		TableViewerColumn column = createTableViewerColumn(columnTitles[0], bounds[0], 0);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
@@ -37,28 +37,6 @@ public class AppPersonViewer extends TableViewer {
 			}
 		});
 		column.setEditingSupport(new OptionEditingSupport(this, 0));
-//	    column.addListener(SWT.Selection, new Listener() {
-//	        public void handleEvent(Event e) {
-//	          // sort column 1
-//	          TableItem[] items = getTable().getItems();
-//	          Collator collator = Collator.getInstance(Locale.getDefault());
-//	          for (int i = 1; i < items.length; i++) {
-//	            String value1 = items[i].getText(0);
-//	            for (int j = 0; j < i; j++) {
-//	              String value2 = items[j].getText(0);
-//	              if (collator.compare(value1, value2) < 0) {
-//	                String[] values = { items[i].getText(0),
-//	                    items[i].getText(1) };
-//	                items[i].dispose();
-//	                TableItem item = new TableItem(getTable(), SWT.NONE, j);
-//	                item.setText(values);
-//	                items = getTable().getItems();
-//	                break;
-//	              }
-//	            }
-//	          }
-//	        }
-//	      });
 		
 		column = createTableViewerColumn(columnTitles[1], bounds[1], 1);
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -79,12 +57,33 @@ public class AppPersonViewer extends TableViewer {
 		column.setEditingSupport(new OptionEditingSupport(this, 2));
 	}
 	
-	private TableViewerColumn createTableViewerColumn(String header, int width, int index) {
-		TableViewerColumn column = new TableViewerColumn(this, SWT.LEFT, index);
-		column.getColumn().setText(header);
-		column.getColumn().setWidth(width);
-		column.getColumn().setResizable(true);
-		column.getColumn().setMoveable(true);
-		return column;
+	private TableViewerColumn createTableViewerColumn(String header, int width, final int index) {
+		TableViewerColumn viewerColumn = new TableViewerColumn(this, SWT.LEFT, index);
+		TableColumn column = viewerColumn.getColumn();
+		column.setText(header);
+		column.setWidth(width);
+		column.setResizable(true);
+		column.setMoveable(true);
+		column.addSelectionListener(getSelectionAdapter(column, index));
+		return viewerColumn;
 	}
+	
+    private SelectionAdapter getSelectionAdapter(final TableColumn column,
+            final int index) {
+        SelectionAdapter selectionAdapter = new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                comparator.setColumn(index);
+                int dir = comparator.getDirection();
+                getTable().setSortDirection(dir);
+                getTable().setSortColumn(column);
+                refresh();
+            }
+        };
+        return selectionAdapter;
+    }
+    
+    public void setFocus() {
+        getControl().setFocus();
+    }
 }
