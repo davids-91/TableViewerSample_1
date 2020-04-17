@@ -7,7 +7,7 @@ public class TableViewerSample_1 {
     public TableViewerSample_1(Shell shell)
     {
         AppPersonViewer personViewer = new AppPersonViewer(shell, SWT.BORDER|SWT.V_SCROLL|SWT.FULL_SELECTION);
-        DataModel model = new DataModel(20);
+        DataModel model = new DataModel(10);
         personViewer.setInput(model);
     }
 
