@@ -9,7 +9,7 @@ public class MyViewerComparator extends ViewerComparator {
 
     public MyViewerComparator() {
         this.propertyIndex = 0;
-        direction = DESCENDING;
+        direction = DESCENDING - 1; //sort ascending by first call
     }
 
     public int getDirection() {
@@ -33,17 +33,20 @@ public class MyViewerComparator extends ViewerComparator {
         Data p2 = (Data) e2;
         int rc = 0;
         switch (propertyIndex) {
-        case 0:
-            rc = p1.getFirst().compareTo(p2.getFirst());
-            break;
-        case 1:
-            rc = p1.getSecond().compareTo(p2.getSecond());
-            break;
-        case 2:
-            rc = String.valueOf(p1.getThird()).compareTo(String.valueOf(p2.getThird()));
-            break;
-        default:
-            rc = 0;
+	        case 0:
+	            rc = p1.getFirst().compareTo(p2.getFirst());
+	            break;
+	        case 1:
+	            rc = p1.getSecond().compareTo(p2.getSecond());
+	            break;
+	        case 2:
+	            rc = String.valueOf(p1.getThird()).compareTo(String.valueOf(p2.getThird()));
+	            break;
+	        case 3:
+	        	rc = p1.getCombo().compareTo(p2.getCombo());
+	        	break;
+	        default:
+	            rc = 0;
         }
         // If descending order, flip the direction
         if (direction == DESCENDING) {
