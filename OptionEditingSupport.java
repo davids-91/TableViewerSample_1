@@ -1,33 +1,34 @@
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 public class OptionEditingSupport extends EditingSupport {
-//    private ComboBoxCellEditor cellEditor;
-//    private CellEditor cellEditor;
 	final int COLUMN_COUNT = AppPersonViewer.columnTitles.length;
     private CellEditor[] cellEditors = new CellEditor[COLUMN_COUNT];
+    private ComboBoxCellEditor cellEditor;
     int columnIndex = 0;
+    private String[] choices = Data.COMBO_ITEMS;
 
     public OptionEditingSupport(ColumnViewer viewer, int columnIndex) {
         super(viewer);
-//        cellEditor = new ComboBoxCellEditor(((TableViewer)viewer).getTable(), new String[]{"Y", "N"});
         for (int i = 0; i < COLUMN_COUNT; i++) {
 	        cellEditors[i] = new TextCellEditor(((TableViewer)viewer).getTable());
     	}
+        cellEditor = new ComboBoxCellEditor(((TableViewer)viewer).getTable(), choices);
         this.columnIndex = columnIndex;
     }
     protected CellEditor getCellEditor(Object element) {
-        return cellEditors[columnIndex];
+    	if (columnIndex!=3) return cellEditors[columnIndex];
+    	else return cellEditor;
     }
     protected boolean canEdit(Object element) {
         return true;
     }
     protected Object getValue(Object element) {
-//        return 0;
     	Data data = (Data) element;
     	Object result = null;
     	switch(columnIndex) {
@@ -40,17 +41,15 @@ public class OptionEditingSupport extends EditingSupport {
     		case 2:
     			result = ""+data.getThird();
     			break;
+    		case 3:
+    			FindArrayIndex findArrayIndex = new FindArrayIndex(choices);
+    			result = findArrayIndex.getIndex(data.getCombo());
+    			break;
     	}
     	return result;
     }
-    protected void setValue(Object element, Object value) 
+    protected void setValue(Object element, Object value)
     {
-//        if((element instanceof Data) && (value instanceof Integer)) {
-//            Integer choice = (Integer)value;
-//            String option = (choice == 0? "Y":"N");
-//            ((Data)element).setLikes( option );
-//            getViewer().update(element, null);
-//        }
     	switch(columnIndex) {
 			case 0:
 		    	if((element instanceof Data)) {
@@ -85,12 +84,21 @@ public class OptionEditingSupport extends EditingSupport {
 		    		}
 		    	}
 				break;
+			case 3:
+		        if((element instanceof Data) && (value instanceof Integer)) {
+		            Integer choice = (Integer)value;
+		            String option = (choices[choice]);
+		            Data data = (Data) element;
+		            data.setCombo(option);
+		            getViewer().update(element, null);
+		        }
+		        break;
 		}
     }
 	private void showError(String message) {
-	MessageDialog.openError(
-		getViewer().getControl().getShell(),
-		"Error",
-		message);
+		MessageDialog.openError(
+			getViewer().getControl().getShell(),
+			"Error",
+			message);
 	}
 }
