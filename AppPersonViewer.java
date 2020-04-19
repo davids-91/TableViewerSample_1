@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.TableColumn;
 
 public class AppPersonViewer extends TableViewer {
 
-	private MyViewerComparator comparator;
 	public static final String[] columnTitles = {"String", "String", "Integer", "Combo"};
 	private static final int[] bounds = {150, 150, 100, 100};
+	private MyViewerComparator comparator;
 	
 	public AppPersonViewer(Composite composite, int style) {
 		super(composite, style);
@@ -92,7 +92,7 @@ public class AppPersonViewer extends TableViewer {
         return selectionAdapter;
     }
     
-//    public void setFocus() {
-//        getControl().setFocus();
-//    }
+    public void setFocus() {
+        getControl().setFocus();
+    }
 }
