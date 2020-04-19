@@ -1,34 +1,18 @@
 import java.util.Random;
 
-import org.eclipse.swt.custom.CCombo;
-
 public class Data {
     public static final String[]   FIRST = {"Favonius", "Tim", "Brad", "Scott", "Linda", "Ava", "Claire", "Joanne", "Natalie", "Tracey"};
     public static final String[]   SECOND = {"Cruise", "Temp", "Abbey", "Adam", "Albert", "Thomas", "Cameron", "Davidson", "Gibson", "Jackson"};
     public static final int[]      THIRD = {22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
     public static final String[]   COMBO_ITEMS = {"Item1", "Item2", "Item3", "Item4", "Item5"};
     public static final String[][] COMBOBOXES = {Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS, Data.COMBO_ITEMS};
-//    public static CCombo[] combobox = new CCombo[10];
-//    public static List<CCombo> combobox = fillList();
     
     private static Random random = new Random(System.currentTimeMillis());
     
     private String first;
     private String second;
     private int third;
-    private CCombo combo;
     private String selected_combo;
-    
-//    public static List<CCombo> fillList()
-//    {
-//    	List<CCombo> combobox = new ArrayList<>();
-//    	for (int i = 0; i < COMBO_ITEMS.length; i++) {
-//    		CCombo combo = new CCombo();
-//    		combo.setItems(COMBO_ITEMS);
-//    		combobox.add(combo);
-//    	}
-//    	return combobox;
-//    }
     
     public Data(String first, String second, int third, String selected_combo) {
     	super();
