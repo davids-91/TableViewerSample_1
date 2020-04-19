@@ -12,18 +12,18 @@ public class TableViewerSample_1 {
     }
 
     public static void main(String[] args) {
-        Display display = new Display ();
+        Display display = new Display();
         Shell shell = new Shell(display);
         shell.setLayout(new FillLayout());
         new TableViewerSample_1(shell);
         shell.setText("TableViewerSample_1");
-        shell.open ();
+        shell.open();
 
-        while (!shell.isDisposed ()) {
-            if (!display.readAndDispatch ()) display.sleep ();
+        while (!shell.isDisposed()) {
+            if (!display.readAndDispatch()) display.sleep();
         }
 
-        display.dispose ();
+        display.dispose();
     }
 
 }
