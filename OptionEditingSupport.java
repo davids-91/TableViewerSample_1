@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -42,8 +44,7 @@ public class OptionEditingSupport extends EditingSupport {
     			result = ""+data.getThird();
     			break;
     		case 3:
-    			FindArrayIndex findArrayIndex = new FindArrayIndex(choices);
-    			result = findArrayIndex.getIndex(data.getCombo());
+    			result = Arrays.asList(choices).indexOf(data.getCombo());
     			break;
     	}
     	return result;
